@@ -10,78 +10,118 @@ package rhino_test;
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import junit.framework.TestCase;
+
 import org.mozilla.javascript.*;
 
 /**
- * ScopeTest 
+ * ScopeTest
+ * 
  *
  */
-public class ScopeTest {
-	public static void main(String args[]) {
-		// Creates and enters a Context. The Context stores information
-		// about the execution environment of a script.
-		Scriptable scope1;
+public class ScopeTest extends TestCase {
+	private Context cx;
+	Scriptable parentScope;
+	Scriptable prototype;
+	Scriptable sampleScope;
 
-		Context cx = Context.enter();
-		try {
-			// Initialize the standard objects (Object, Function, etc.)
-			// This must be done before scripts can be executed. Returns
-			// a scope object that we use in later calls.
-			scope1 = cx.initStandardObjects();
+	@Override
+	protected void setUp() throws Exception {
+		cx = Context.enter();
+		parentScope = cx.initStandardObjects();
 
-			// Collect the arguments into a single string.
-			String s = "var xInScope1='inScope1'";
-			// for (int i=0; i < args.length; i++) {
-			// s += args[i];
-			// }
+		String s = "var greeting='greeting in parent scope'";
+		cx.evaluateString(parentScope, s, "<cmd>", 1, null);
+		s = "var varInParentScope ='only in parentScope'";
+		cx.evaluateString(parentScope, s, "<cmd>", 1, null);
 
-			// Now evaluate the string we've colected.
-			Object result = cx.evaluateString(scope1, s, "<cmd>", 1, null);
+		prototype = cx.newObject(parentScope);
+		s = "var greeting='greeting in prototype scope'";
+		cx.evaluateString(prototype, s, "<cmd>", 1, null);
 
-			// Convert the result to a string and print it.
-			System.err.println(Context.toString(result));
+		sampleScope = cx.newObject(parentScope);
+		sampleScope.setParentScope(parentScope);
+		sampleScope.setPrototype(prototype);
 
-		} finally {
-			// Exit from the context.
-			Context.exit();
+		ScriptableObject.putProperty(sampleScope, "userName", "rhino");
+
+		super.setUp();
+	}
+
+	public void testScriptableObject() {
+		// Scriptable.get()不会处理prototype,所以greeting的值为空
+		Object v1 = sampleScope.get("greeting", sampleScope);
+		assertEquals(Scriptable.NOT_FOUND, v1);
+
+		// ScriptableObject.getProperty会处理prototype
+		Object v2 = ScriptableObject.getProperty(sampleScope, "greeting");
+		assertEquals("greeting in prototype scope", v2);
+
+		// 但是ScriptableObject.getProperty不会处理parent scope
+		Object v3 = ScriptableObject.getProperty(sampleScope,
+				"varInParentScope");
+		assertEquals(Scriptable.NOT_FOUND, v3);
+
+		// 设置sampleScope.greeting,不会影响prototype.greeting
+		ScriptableObject.putProperty(sampleScope, "greeting",
+				"greeting in sample scope");
+		Object v4 = sampleScope.get("greeting", sampleScope);
+		assertEquals("greeting in sample scope", v4);
+		Object v5 = ScriptableObject.getProperty(prototype, "greeting");
+		assertEquals("greeting in prototype scope", v5);
+
+	}
+
+	public void testEvalVar() {
+		// 取得的是prototypeScope.greeting
+		String s = "greeting";
+		Object v1 = cx.evaluateString(sampleScope, s, "<cmd>", 1, null);
+		assertEquals("greeting in prototype scope", v1);
+
+		// 取得的是parentScope.varInParentScope
+		s = "varInParentScope";
+		Object v2 = cx.evaluateString(sampleScope, s, "<cmd>", 1, null);
+		assertEquals("only in parentScope", v2);
+	}
+
+	public void testFuncVar() {
+		// 取得的是prototypeScope.greeting
+		String s = "function func1(){return greeting};func1";
+		NativeFunction v1 = (NativeFunction) cx.evaluateString(sampleScope, s, "<cmd>", 1, null);
+		
+//		assertEquals("greeting in prototype scope", v1);
+
+		// 取得的是parentScope.varInParentScope
+		s = "func1()";
+		Object v2 = cx.evaluateString(sampleScope, s, "<cmd>", 1, null);
+		assertEquals("only in parentScope", v2);
+	}
+	public void testInitStandardObjectsTimeCost() {
+		//initStandardObjects耗费的时间是newObject的100倍,所以应该context共享
+		long start = System.currentTimeMillis();
+		for (int i = 0; i < 10000; i++) {
+			ScriptableObject initStandardObjects = cx.initStandardObjects();
+			Object o = initStandardObjects;
 		}
-		Scriptable parentScope = newScope(scope1, "parentScope");
-		Scriptable prototype = newScope(scope1, "prototype");
-		Scriptable prop = newScope(scope1, "prop");
-		Scriptable scope4 = newScope(scope1, null);
-		scope4.setParentScope(parentScope);
-		scope4.setPrototype(prototype);
-		scope4.put("prop", scope4, prop);
-		testScope(scope4);
-		debug(scope1);
-		debug(scope4);
+		long end = System.currentTimeMillis();
+		System.out.println((end-start)/1000.0);
 		
 	}
-
-	private static void testScope(Scriptable scope) {
-		Context cx = Context.enter();
-
-		String source = "java.lang.System.out.println(greeting)\n"
-				+ "java.lang.System.out.println(prop.greeting)\n"
-				+ "java.lang.System.out.println(prop.prop)\n"
-				+ "whereAmI='whereAmI'";
-		cx.evaluateString(scope, source, "cmd", 1, null);
-		cx.evaluateString(scope, "whereAmI='user1'", "cmd", 1, null);
-		Context.exit();
-	}
-
-	private static Scriptable newScope(Scriptable parentScope, String id) {
-		Context cx = Context.enter();
-		Scriptable theScope = cx.newObject(parentScope);
-		if (id != null) {
-			String source = "var " + id + " = 'valueIn" + id + "';\n"
-					+ "var greeting='" + id + "'";
-			cx.evaluateString(theScope, source, "cmd", 1, null);
-			debug(theScope);
+	public void testNewObjectTimeCost() {
+		//initStandardObjects耗费的时间是newObject的100倍,所以应该context共享
+		long start = System.currentTimeMillis();
+		for (int i = 0; i < 10000; i++) {
+			Scriptable newObject = cx.newObject(parentScope);
+			Object o = newObject;
 		}
-
+		long end = System.currentTimeMillis();
+		System.out.println((end-start)/1000.0);
+		
+	}
+	@Override
+	protected void tearDown() throws Exception {
 		Context.exit();
-		return theScope;
+		super.tearDown();
 	}
 
 	static private void debug(Scriptable scope) {
