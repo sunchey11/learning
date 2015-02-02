@@ -24,7 +24,7 @@ public class RunScript2 {
 			Object jsOut = Context.javaToJS(System.out, scope);
 			ScriptableObject.putProperty(scope, "out", jsOut);
 
-			String s = "";
+			String s = "out.println('aabbcc')";
 			for (int i = 0; i < args.length; i++) {
 				s += args[i];
 			}

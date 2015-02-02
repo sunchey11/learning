@@ -13,14 +13,10 @@ package rhino_test;
 import org.mozilla.javascript.*;
 
 /**
- * RunScript: simplest example of controlling execution of Rhino.
- * 
- * Collects its arguments from the command line, executes the script, and prints
- * the result.
- * 
- * @author Norris Boyd
+ * ScopeTest 
+ *
  */
-public class MyTest {
+public class ScopeTest {
 	public static void main(String args[]) {
 		// Creates and enters a Context. The Context stores information
 		// about the execution environment of a script.
@@ -70,13 +66,13 @@ public class MyTest {
 				+ "java.lang.System.out.println(prop.prop)\n"
 				+ "whereAmI='whereAmI'";
 		cx.evaluateString(scope, source, "cmd", 1, null);
+		cx.evaluateString(scope, "whereAmI='user1'", "cmd", 1, null);
 		Context.exit();
 	}
 
-	private static Scriptable newScope(Scriptable scope1, String id) {
+	private static Scriptable newScope(Scriptable parentScope, String id) {
 		Context cx = Context.enter();
-		Scriptable theScope = cx.newObject(scope1);
-		// theScope.setParentScope(null);
+		Scriptable theScope = cx.newObject(parentScope);
 		if (id != null) {
 			String source = "var " + id + " = 'valueIn" + id + "';\n"
 					+ "var greeting='" + id + "'";
