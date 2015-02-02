@@ -1,4 +1,4 @@
-package anders.rhino_test;
+package rhino_test;
 
 /**
  * Hello world!

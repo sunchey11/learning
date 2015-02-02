@@ -1,4 +1,4 @@
-package anders.rhino_test;
+package rhino_test;
 
 /* -*- Mode: java; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  *

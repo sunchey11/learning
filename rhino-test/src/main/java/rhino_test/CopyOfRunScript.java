@@ -1,4 +1,4 @@
-package anders.rhino_test;
+package rhino_test;
 
 /**
  * Hello world!
@@ -20,7 +20,7 @@ import org.mozilla.javascript.*;
  * 
  * @author Norris Boyd
  */
-public class RunScript {
+public class CopyOfRunScript {
 	public static void main(String args[]) {
 		// Creates and enters a Context. The Context stores information
 		// about the execution environment of a script.
