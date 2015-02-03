@@ -86,7 +86,7 @@ public class ScopeTest extends TestCase {
 
 	public void testFuncVar() {
 		// 取得的是prototypeScope.greeting
-		String s = "function func1(){return greeting};func1";
+		String s = "function func1(){var local;local;return greeting};func1";
 		NativeFunction v1 = (NativeFunction) cx.evaluateString(sampleScope, s, "<cmd>", 1, null);
 		
 //		assertEquals("greeting in prototype scope", v1);
@@ -118,6 +118,41 @@ public class ScopeTest extends TestCase {
 		System.out.println((end-start)/1000.0);
 		
 	}
+	public void testSealObject1(){
+		//调用sealObject之后,就不能改变变量值了
+		Context context = Context.enter();
+		try {
+
+			ScriptableObject scope = context.initStandardObjects();
+			String s = "var greeting='greeting'";
+			cx.evaluateString(scope, s, "<cmd>", 1, null);
+			scope.sealObject();
+			
+			s = "greeting='changed'";
+			cx.evaluateString(scope, s, "<cmd>", 1, null);
+		} finally {
+			Context.exit();
+		}
+		
+	}
+	public void testSealObject2(){
+		//但是可以修改变量对象内的属性值,即使一定调用了sealObject
+		Context context = Context.enter();
+		try {
+
+			ScriptableObject scope = context.initStandardObjects();
+			String s = "var greeting = {name:'liu'}";
+			cx.evaluateString(scope, s, "<cmd>", 1, null);
+			scope.sealObject();
+			
+			s = "greeting.name='changed'";
+			cx.evaluateString(scope, s, "<cmd>", 1, null);
+		} finally {
+			Context.exit();
+		}
+		
+	}
+	
 	@Override
 	protected void tearDown() throws Exception {
 		Context.exit();

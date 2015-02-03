@@ -7,22 +7,44 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ContextFactory;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
+import rhino_test.DynamicScopes.MyFactory;
+
 public class RhinoScriptServlet extends HttpServlet {
 
+	public static boolean useDynamicScope = false;
+
+	static class MyFactory extends ContextFactory {
+		@Override
+		protected boolean hasFeature(Context cx, int featureIndex) {
+			if (featureIndex == Context.FEATURE_DYNAMIC_SCOPE) {
+				return useDynamicScope;
+			}
+			return super.hasFeature(cx, featureIndex);
+		}
+	}
+
+	static {
+		ContextFactory.initGlobal(new MyFactory());
+	}
+	public static String GLOBLE_SCRIPT;
+	public static String THREAD_SCRIPT;
 	private static final long serialVersionUID = 1L;
-	ScriptableObject standardObjects = null;
+	private ScriptableObject globleScope = null;
+	
 
 	@Override
-	public void init(ServletConfig config) throws ServletException {
-		super.init(config);
+	public void init() throws ServletException {
+		super.init();
 		Context cx = Context.enter();
 		try {
-			standardObjects = cx.initStandardObjects();
-			String s = "function func1(){return greeting};func1";
-			cx.evaluateString(standardObjects, s, "<cmd>", 1, null);
+			globleScope = cx.initStandardObjects();
+			
+			cx.evaluateString(globleScope, GLOBLE_SCRIPT, "<cmd>", 1, null);
+			globleScope.sealObject();
 		} finally {
 			Context.exit();
 		}
@@ -32,11 +54,14 @@ public class RhinoScriptServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException {
 		Context cx = Context.enter();
 		try {
-			String script = "func1()";
-			Scriptable threadScope = cx.newObject(standardObjects);
-			threadScope.setPrototype(standardObjects);
+			
+			Scriptable threadScope = cx.newObject(globleScope);
+			threadScope.setPrototype(globleScope);
 			threadScope.setParentScope(null);
-			Object result = cx.evaluateString(threadScope, script, "<cmd>", 1, null);
+			Object result = cx.evaluateString(threadScope, THREAD_SCRIPT, "<cmd>", 1, null);
+			System.err.println(Context.toString(result));
+			
+			result = cx.evaluateString(threadScope, "greeting", "<cmd>", 1, null);
 			System.err.println(Context.toString(result));
 		} finally {
 			Context.exit();
