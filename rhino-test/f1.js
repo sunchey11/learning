@@ -8,3 +8,4 @@ function func1(p){
 	func2("call func2");
 }
 new func1("call func1");
+//添加的注释
