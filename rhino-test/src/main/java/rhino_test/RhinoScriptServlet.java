@@ -58,6 +58,7 @@ public class RhinoScriptServlet extends HttpServlet {
 			Scriptable threadScope = cx.newObject(globleScope);
 			threadScope.setPrototype(globleScope);
 			threadScope.setParentScope(null);
+			//取得的是gloableScope中的greeting值
 			Object result = cx.evaluateString(threadScope, THREAD_SCRIPT, "<cmd>", 1, null);
 			System.err.println(Context.toString(result));
 			

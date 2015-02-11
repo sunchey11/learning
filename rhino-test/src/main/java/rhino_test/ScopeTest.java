@@ -84,18 +84,7 @@ public class ScopeTest extends TestCase {
 		assertEquals("only in parentScope", v2);
 	}
 
-	public void testFuncVar() {
-		// 取得的是prototypeScope.greeting
-		String s = "function func1(){var local;local;return greeting};func1";
-		NativeFunction v1 = (NativeFunction) cx.evaluateString(sampleScope, s, "<cmd>", 1, null);
-		
-//		assertEquals("greeting in prototype scope", v1);
 
-		// 取得的是parentScope.varInParentScope
-		s = "func1()";
-		Object v2 = cx.evaluateString(sampleScope, s, "<cmd>", 1, null);
-		assertEquals("only in parentScope", v2);
-	}
 	public void testInitStandardObjectsTimeCost() {
 		//initStandardObjects耗费的时间是newObject的100倍,所以应该context共享
 		long start = System.currentTimeMillis();

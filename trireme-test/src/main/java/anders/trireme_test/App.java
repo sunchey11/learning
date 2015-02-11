@@ -20,8 +20,8 @@ public class App {
 
 		// Pass in the script file name, a File pointing to the actual script,
 		// and an Object[] containg "argv"
-		NodeScript script = env.createScript("learnyounode.js", new File(
-				"learnyounode.js"), new String[]{"2000"});
+		NodeScript script = env.createScript("my-test-script.js", new File(
+				"my-test-script.js"), new String[]{"2000"});
 
 		// Wait for the script to complete
 		ScriptStatus status = script.execute().get();
