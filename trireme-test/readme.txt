@@ -69,20 +69,30 @@ Module.prototype.require = function(path) {
                 ZLib,HTTPParser,TriremeNativeSupport,CaresWrap,TimerWrap
 
         HashMap<String, NativeNodeModule>   nativeModules 为空
-
-        
-        
-        
         
     2.读取main script
     3.读取 compiledModule,compiledModule是在Node10Implementation中定义的
       HashMap<String, Script>             compiledModules
       
     
-4.initGloble初始化scope对象,往里面放了一个
-  process,类型为Process$ProcessImpl
-     在js对象中使用var NativeModule = process.binding('native_module')
-     就可以取得NativeModule
+4.ScriptRunner
+
+       方法initializeModule("模块名称");//创建NodeModule实例,并调用registerExports方法得到export对象
+       属性nativeModule,是一个NativeImpl对象,有下列方法
+         require 给js调用
+         exists  给js调用
+         
+       属性Process.ProcessImpl process
+       binding(name)   调用runner获得module
+       argv  命令行参数
+       _eval
+       env
+       
+       方法initGloble
+       1.创建nativeModule,并放到缓存里 HashMap<String, NativeModule.ModuleImpl> moduleCache
+       2.创建process对象
+       3.将process对象放到scope中
+                      在js对象中使用var NativeModule = process.binding('native_module')
+                      就可以取得NativeModule
      
-5.js中的process对象
-   process.argv 命令行参数
+
