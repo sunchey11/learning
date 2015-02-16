@@ -25,4 +25,35 @@ public class ContextFactoryTest extends TestCase {
 		String result = (String) r;
 		assertEquals("abc", result);
 	}
+	
+	/**
+	 * 测试下ContextFactory.Listener的功能
+	 */
+	public void testListener() {
+		ContextFactory.Listener listener = new ContextFactory.Listener() {
+
+			public void contextReleased(Context cx) {
+				System.out.println("contextReleased:" + cx);
+
+			}
+
+			public void contextCreated(Context cx) {
+				System.out.println("contextCreated:" + cx);
+
+			}
+		};
+		
+		ContextFactory cf = new ContextFactory();
+		cf.addListener(listener);
+		//listener只有在ContextFactory.call调用时有效,Context.enter()无效
+		cf.call(new ContextAction() {
+			
+			public Object run(Context cx) {
+				System.out.println("action:"+cx);
+				return null;
+			}
+		});
+		
+		
+	}
 }

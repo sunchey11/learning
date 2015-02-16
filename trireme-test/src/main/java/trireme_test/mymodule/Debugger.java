@@ -9,6 +9,13 @@ import java.io.File;
 import java.util.concurrent.ExecutionException;
 
 public class Debugger {
+	/**
+	 * debug功能跑不起来
+	 * @param args
+	 * @throws NodeException
+	 * @throws InterruptedException
+	 * @throws ExecutionException
+	 */
 	public static void main(String[] args) throws NodeException, InterruptedException, ExecutionException {
 		NodeEnvironment env = new NodeEnvironment();
 
