@@ -15,11 +15,21 @@ public class HelloModuleTest extends TestCase {
 	public void testHello() throws NodeException, InterruptedException,
 			ExecutionException, FileNotFoundException {
 		NodeEnvironment env = new NodeEnvironment();
-		
+
 		NodeScript script = env.createScript("hellotest.js", new File(
-				"hellotest.js"), new String[]{"2000"});
-		
-	
+				"hellotest.js"), new String[] { "2000" });
+
+		ScriptStatus status = script.execute().get();
+		System.exit(status.getExitCode());
+	}
+
+	public void testMyjsModule() throws NodeException, InterruptedException,
+			ExecutionException, FileNotFoundException {
+		NodeEnvironment env = new NodeEnvironment();
+
+		NodeScript script = env.createScript("myjsModuleTest.js", new File(
+				"myjsModuleTest.js"), new String[] { "2000" });
+
 		ScriptStatus status = script.execute().get();
 		System.exit(status.getExitCode());
 	}

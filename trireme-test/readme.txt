@@ -7,7 +7,7 @@ Module.prototype.require = function(path) {
 };
 
 2.
-   Node10Implementation implements NodeImplementation 一个实现代表一个node 版本
+   Node10Implementation implements NodeImplementation 一个实现类代表一个node 版本
        定义了程序入口脚本名称和内置脚本
        主脚本名称:trireme
        内置脚本: 
@@ -96,3 +96,4 @@ Module.prototype.require = function(path) {
                       就可以取得NativeModule
      
 
+4.trireme与spring结合

@@ -9,9 +9,7 @@ import io.apigee.trireme.core.modules.Process.ProcessImpl;
 import io.apigee.trireme.node10.main.trireme;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -27,8 +25,10 @@ import org.mozilla.javascript.Script;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.tools.debugger.Main;
 
-import trireme_test.reorg.TriremeFuncTest;
-
+/**
+ * 功能拆解测试,测试debug trireme
+ *
+ */
 public class TriremeDebug2 {
 
 	public static void main(String[] theArgs) throws NodeException {
@@ -36,7 +36,9 @@ public class TriremeDebug2 {
 		// callMethod(NodeEnvironment.class, env, "initialize", new Object[]
 		// {});
 
-		final String pathname = "hellotest.js";
+//		final String pathname = "hellotest.js";
+		final String pathname = "myjsModuleTest.js";
+		
 		File file = new File(pathname);
 		String[] args = new String[] { "2000" };
 		NodeScript script = env.createScript(pathname, file, args);

@@ -10,6 +10,9 @@ import org.mozilla.javascript.tools.debugger.Main;
 import junit.framework.TestCase;
 
 public class DebuggerTest extends TestCase {
+	/**
+	 * debug的底层机制
+	 */
 	public void testDebugger() {
 		ContextFactory cf = new ContextFactory();
 		cf.addListener(new DebugAttachListener());

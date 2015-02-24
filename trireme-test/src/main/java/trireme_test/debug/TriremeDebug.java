@@ -10,6 +10,10 @@ import org.mozilla.javascript.ContextFactory;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.tools.debugger.Main;
 
+/**
+ *可以debug trireme,但是无法跟踪到js源码 
+ *
+ */
 public class TriremeDebug {
 
 	public static void main(String[] args) {
