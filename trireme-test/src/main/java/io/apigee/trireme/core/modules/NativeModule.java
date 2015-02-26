@@ -142,6 +142,10 @@ public class NativeModule implements NodeModule {
 				Object[] args, Function func) throws InvocationTargetException,
 				InstantiationException, IllegalAccessException {
 			String name = stringArg(args, 0);
+			if (name.startsWith("myjsModule")) {
+				System.out.println("here");
+			}
+			
 			if ((thisObj != null) && (thisObj instanceof NativeImpl)) {
 				NativeImpl self = (NativeImpl) thisObj;
 				return self.internalRequire(name, cx);
@@ -179,7 +183,9 @@ public class NativeModule implements NodeModule {
 				runner.cacheModule(name, mod);
 				return mod.getExports();
 			}
-
+			if (name.startsWith("myjsModule")) {
+				System.out.println("here");
+			}
 			Script compiled = runner.getRegistry().getCompiledModule(name);
 			if (compiled != null) {
 				// We found a compiled script -- run it and register.
@@ -214,11 +220,12 @@ public class NativeModule implements NodeModule {
 			// 使用Script类,无法跟踪源代码,所以改为evaluateString的方式
 			Class<? extends Script> clazz = compiled.getClass();
 			String name = clazz.getSimpleName();
-			
+
 			String src;
 			try {
-				InputStream resourceAsStream = clazz.getResourceAsStream(name + ".js");
-				
+				InputStream resourceAsStream = clazz.getResourceAsStream(name
+						+ ".js");
+
 				src = IOUtils.toString(resourceAsStream);
 			} catch (IOException e) {
 				throw new RuntimeException(e);

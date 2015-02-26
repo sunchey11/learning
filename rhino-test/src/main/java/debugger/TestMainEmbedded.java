@@ -48,6 +48,8 @@ public class TestMainEmbedded {
 					//无法跟踪到f2调用里面了
 					cx.evaluateString(scope, "var x=f2('a');java.lang.System.out.println(x)", "<cmd>", 1, null);
 					
+					//无法跟踪到f2调用里面了
+					cx.evaluateString(scope, "Packages.debugger1.Utils.hello('aaa')", "<cmd>", 1, null);
 				} catch (FileNotFoundException e) {
 					throw new RuntimeException(e);
 				} catch (IOException e) {

@@ -21,7 +21,8 @@ public class CallableDemo {
 		ExecutorService exec = Executors.newCachedThreadPool();
 		ArrayList<Future<String>> results = new ArrayList<Future<String>>();
 		for (int i = 0; i < 10; i++) {
-			results.add(exec.submit(new TaskWithResult(i)));
+			Future<String> future = exec.submit(new TaskWithResult(i));
+			results.add(future);
 		}
 		for (Future<String> fs : results) {
 			try {
