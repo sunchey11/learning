@@ -6,9 +6,12 @@ package rhino_test;
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import org.mozilla.javascript.*;
-import org.mozilla.javascript.annotations.JSFunction;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Function;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.annotations.JSConstructor;
+import org.mozilla.javascript.annotations.JSFunction;
 import org.mozilla.javascript.annotations.JSGetter;
 
 public class Counter extends ScriptableObject {
@@ -44,4 +47,16 @@ public class Counter extends ScriptableObject {
 	}
 
 	private int count;
+	
+	//定义一个hello函数,如果有这四个参数,则函数必须为static
+	 @JSFunction
+     public static String hello(Context cx, Scriptable thisObj, Object[] args, Function func)
+     {
+         String name = Context.toString(args[0]) ;
+         Class<? extends Scriptable> class1 = thisObj.getClass();
+         System.out.println(class1);
+         System.out.println("Hello, " + name + '!');
+         return "Hello, " + name + '!';
+     }
+
 }

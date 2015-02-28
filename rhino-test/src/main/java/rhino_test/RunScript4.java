@@ -35,12 +35,15 @@ public class RunScript4 {
             
             
 
-            String s = "";
-            for (int i=0; i < args.length; i++) {
-                s += args[i];
-            }
+            String s = "myCounter.count";
             Object result = cx.evaluateString(scope, s, "<cmd>", 1, null);
-            System.err.println(Context.toString(result));
+            System.out.println(Context.toString(result));
+            
+            s = "myCounter.hello('abc')";
+            result = cx.evaluateString(scope, s, "<cmd>", 1, null);
+            System.out.println(result);
+            
+            
         } finally {
             Context.exit();
         }

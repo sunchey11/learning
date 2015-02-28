@@ -56,4 +56,39 @@ public class ContextFactoryTest extends TestCase {
 		
 		
 	}
+	/**
+	 * 如果使用Context.enter()语法,应该给ContextFactory.getGlobal()添加监听器
+	 */
+	public void testListener2() {
+		ContextFactory.Listener listener = new ContextFactory.Listener() {
+
+			public void contextReleased(Context cx) {
+				System.out.println("contextReleased:" + cx);
+
+			}
+
+			public void contextCreated(Context cx) {
+				System.out.println("contextCreated:" + cx);
+
+			}
+		};
+		
+		ContextFactory cf = ContextFactory.getGlobal();
+		cf.addListener(listener);
+		Context cx = Context.enter();
+		try {
+		     Scriptable scope = cx.initStandardObjects();
+
+		           
+		     String s = "var a=1";
+		     Object result = cx.evaluateString(scope, s, "<cmd>", 1, null);
+
+		           
+		     System.err.println(Context.toString(result));
+		} finally {
+		     Context.exit();
+		}
+		
+		
+	}
 }
