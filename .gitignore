@@ -7,3 +7,4 @@ pom.xml.next
 release.properties
 tij/nio/data2.txt
 tij/nio/data.txt
+*.txt
