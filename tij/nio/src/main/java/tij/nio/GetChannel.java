@@ -12,7 +12,9 @@ public class GetChannel {
 	public static void main(String[] args) throws Exception {
 		// Write a file:
 		FileChannel fc = new FileOutputStream("data.txt").getChannel();
+		
 		ByteBuffer bb = ByteBuffer.wrap("Some text ".getBytes());
+		bb.compact();
 		bb.position(2);
 		fc.write(bb);
 		fc.close();

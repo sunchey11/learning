@@ -15,6 +15,7 @@ public class ByteBufferSample {
 		ByteBuffer b2 = ByteBuffer.wrap("abcde".getBytes());
 		System.out.println(new String(b2.array()));
 		CharBuffer str = Charset.forName("utf-8").decode(b2);
+		
 		System.out.println(str.toString());
 		System.out.println(b2);
 		System.out.println(b2.remaining());
