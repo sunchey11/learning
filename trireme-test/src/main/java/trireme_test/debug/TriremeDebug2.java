@@ -37,10 +37,10 @@ public class TriremeDebug2 {
 		// {});
 
 //		final String pathname = "hellotest.js";
-		final String pathname = "myjsModuleTest.js";
+//		final String pathname = "myjsModuleTest.js";
 //		final String pathname = "myGreetingModuleTest.js";
 //		final String pathname = "fsTest.js";
-		
+		final String pathname="myServer.js";
 		
 		File file = new File(pathname);
 		String[] args = new String[] { "2000" };

@@ -48,6 +48,15 @@ public class ScopeTest extends TestCase {
 		super.setUp();
 	}
 
+	public void test1() {
+
+		String s = "var o = new Object();"
+				+ "o.__defineGetter__('xx',function(){return 'user'});"
+				+ "o.xx";
+		Object v1 = cx.evaluateString(sampleScope, s, "<cmd>", 1, null);
+		System.out.println(v1);
+	}
+
 	public void testScriptableObject() {
 		// Scriptable.get()不会处理prototype,所以greeting的值为空
 		Object v1 = sampleScope.get("greeting", sampleScope);
@@ -84,31 +93,32 @@ public class ScopeTest extends TestCase {
 		assertEquals("only in parentScope", v2);
 	}
 
-
 	public void testInitStandardObjectsTimeCost() {
-		//initStandardObjects耗费的时间是newObject的100倍,所以应该context共享
+		// initStandardObjects耗费的时间是newObject的100倍,所以应该context共享
 		long start = System.currentTimeMillis();
 		for (int i = 0; i < 10000; i++) {
 			ScriptableObject initStandardObjects = cx.initStandardObjects();
 			Object o = initStandardObjects;
 		}
 		long end = System.currentTimeMillis();
-		System.out.println((end-start)/1000.0);
-		
+		System.out.println((end - start) / 1000.0);
+
 	}
+
 	public void testNewObjectTimeCost() {
-		//initStandardObjects耗费的时间是newObject的100倍,所以应该context共享
+		// initStandardObjects耗费的时间是newObject的100倍,所以应该context共享
 		long start = System.currentTimeMillis();
 		for (int i = 0; i < 10000; i++) {
 			Scriptable newObject = cx.newObject(parentScope);
 			Object o = newObject;
 		}
 		long end = System.currentTimeMillis();
-		System.out.println((end-start)/1000.0);
-		
+		System.out.println((end - start) / 1000.0);
+
 	}
-	public void testSealObject1(){
-		//调用sealObject之后,就不能改变变量值了
+
+	public void testSealObject1() {
+		// 调用sealObject之后,就不能改变变量值了
 		Context context = Context.enter();
 		try {
 
@@ -116,16 +126,17 @@ public class ScopeTest extends TestCase {
 			String s = "var greeting='greeting'";
 			cx.evaluateString(scope, s, "<cmd>", 1, null);
 			scope.sealObject();
-			
+
 			s = "greeting='changed'";
 			cx.evaluateString(scope, s, "<cmd>", 1, null);
 		} finally {
 			Context.exit();
 		}
-		
+
 	}
-	public void testSealObject2(){
-		//但是可以修改变量对象内的属性值,即使一定调用了sealObject
+
+	public void testSealObject2() {
+		// 但是可以修改变量对象内的属性值,即使一定调用了sealObject
 		Context context = Context.enter();
 		try {
 
@@ -133,15 +144,15 @@ public class ScopeTest extends TestCase {
 			String s = "var greeting = {name:'liu'}";
 			cx.evaluateString(scope, s, "<cmd>", 1, null);
 			scope.sealObject();
-			
+
 			s = "greeting.name='changed'";
 			cx.evaluateString(scope, s, "<cmd>", 1, null);
 		} finally {
 			Context.exit();
 		}
-		
+
 	}
-	
+
 	@Override
 	protected void tearDown() throws Exception {
 		Context.exit();

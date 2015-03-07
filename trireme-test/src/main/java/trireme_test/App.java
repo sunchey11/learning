@@ -20,8 +20,10 @@ public class App {
 
 		// Pass in the script file name, a File pointing to the actual script,
 		// and an Object[] containg "argv"
-		NodeScript script = env.createScript("http_uppercaserer.js", new File(
-				"http_uppercaserer.js"), new String[]{"2000"});
+//		String scriptName = "http_uppercaserer.js";
+		String scriptName = "myServer.js";
+		NodeScript script = env.createScript(scriptName, new File(
+				scriptName), new String[]{"2000"});
 
 		// Wait for the script to complete
 		ScriptStatus status = script.execute().get();
