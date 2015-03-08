@@ -57,6 +57,8 @@ public class NIOServer {
                 if (key.isAcceptable()) {  
                     ServerSocketChannel server = (ServerSocketChannel) key  
                             .channel();  
+                   
+                    
                     // 获得和客户端连接的通道  
                     SocketChannel channel = server.accept();  
                     // 设置成非阻塞  

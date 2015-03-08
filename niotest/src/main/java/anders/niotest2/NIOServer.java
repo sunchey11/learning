@@ -16,7 +16,15 @@ import java.util.Set;
  *
  */
 public class NIOServer {
+	private static void printSelectorInfo(Selector selector) {
+		Set<SelectionKey> keys = selector.keys();
+		for (SelectionKey sk : keys) {
+			printKeyInfo(sk);
+		}
+		
+	}
 	private static void printKeyInfo(SelectionKey sk) {
+		
 		String s = new String();
 
 		s = "Att: " + (sk.attachment() == null ? "no" : "yes");
@@ -26,7 +34,8 @@ public class NIOServer {
 		s += ", Wrt: " + sk.isWritable();
 		s += ", Valid: " + sk.isValid();
 		s += ", Ops: " + sk.interestOps();
-		System.out.println(s);
+		s += ", ready: " + sk.readyOps();
+		System.out.println(sk.hashCode()+":"+ s);
 	}
 	/* 标识数字 */
 	private int flag = 0;
@@ -49,10 +58,11 @@ public class NIOServer {
 		serverSocket.bind(new InetSocketAddress(port));
 		// 通过open()方法找到Selector
 		selector = Selector.open();
+		
 		// 注册到selector，等待连接
 		SelectionKey registerKey = serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 		printKeyInfo(registerKey);
-		
+		printSelectorInfo(selector);
 		System.out.println("Server Start----8888:");
 	}
 
@@ -91,7 +101,10 @@ public class NIOServer {
 			// 配置为非阻塞
 			client.configureBlocking(false);
 			// 注册到selector，等待连接
+			
+			
 			SelectionKey registerKey = client.register(selector, SelectionKey.OP_READ);
+			printSelectorInfo(selector);
 			printKeyInfo(registerKey);
 		} else if (selectionKey.isReadable()) {
 			// 返回为之创建此键的通道。
@@ -105,6 +118,7 @@ public class NIOServer {
 				System.out.println("服务器端接受客户端数据--:" + receiveText);
 //				client.write(ByteBuffer.wrap(receiveText.getBytes()));
 				SelectionKey registerKey = client.register(selector, SelectionKey.OP_WRITE);
+				printSelectorInfo(selector);
 				printKeyInfo(registerKey);
 			}
 		} else if (selectionKey.isWritable()) {
@@ -120,7 +134,9 @@ public class NIOServer {
 			// 输出到通道
 			client.write(sendbuffer);
 			System.out.println("服务器端向客户端发送数据--：" + sendText);
+			printSelectorInfo(selector);
 			SelectionKey registerKey = client.register(selector, SelectionKey.OP_READ);
+			printSelectorInfo(selector);
 			printKeyInfo(registerKey);
 		}
 	}
@@ -131,7 +147,7 @@ public class NIOServer {
 	 */
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		int port = 8888;
+		int port = 1111;
 		NIOServer server = new NIOServer(port);
 		server.listen();
 	}
