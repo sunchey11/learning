@@ -39,7 +39,7 @@ public class ChannelAccept
 
 		ssc.socket().bind (new InetSocketAddress (port));
 		ssc.configureBlocking (false);
-
+System.out.println(ssc.socket().getChannel()==ssc);
 		while (true) {
 			System.out.println ("Waiting for connections");
 
