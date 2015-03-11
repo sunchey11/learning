@@ -1,4 +1,4 @@
-package anders.niotest2;
+package selector.sample;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
