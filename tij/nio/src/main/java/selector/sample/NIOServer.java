@@ -147,7 +147,7 @@ public class NIOServer {
 	 */
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		int port = 1111;
+		int port = 1234;
 		NIOServer server = new NIOServer(port);
 		server.listen();
 	}
