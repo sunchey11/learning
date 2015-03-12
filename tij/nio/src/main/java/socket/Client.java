@@ -22,8 +22,16 @@ public class Client {
 		System.out.println(channel);
 		// 写完以后进行读操作
 		InputStream inputStream = client.getInputStream();
-		String string = IOUtils.toString(inputStream);
-		System.out.println(string);
+		
+		int b;
+		b = inputStream.read();
+		while(b!=-1){
+			System.out.print((char)b);
+			b = inputStream.read();
+		}
+		
+//		String string = IOUtils.toString(inputStream);
+//		System.out.println(string);
 		
 		client.close();
 	}
