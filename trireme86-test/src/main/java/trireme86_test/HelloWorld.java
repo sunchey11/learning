@@ -13,8 +13,8 @@ public class HelloWorld {
 
 	public static void main(String[] args) throws InterruptedException, ExecutionException, NodeException {
 		// The NodeEnvironment controls the environment for many scripts
-//				NodeEnvironment env = new NodeEnvironment();
-				NodeEnvironment env = EnvironmentManager.get().getEnvironment();
+				NodeEnvironment env = new NodeEnvironment();
+//				NodeEnvironment env = EnvironmentManager.get().getEnvironment();
 				// Pass in the script file name, a File pointing to the actual script,
 				// and an Object[] containg "argv"
 //				String scriptName = "helloWorld.js";
