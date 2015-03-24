@@ -23,7 +23,8 @@ public class JedisSimpleTest {
      */  
     @Before  
     public void beforeClass() {  
-        jedis = new Jedis("192.168.21.137");  
+//        jedis = new Jedis("192.168.21.137");  
+        jedis = new Jedis("127.0.0.1");  
     }  
       
     /** 
