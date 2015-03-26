@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="V-b8dyjii7885ylks9pup8">
+		<property name="$metaclass" value="ActivityDiagram20"/>
+		<property name="$name" value="channel"/>
+		<property name="CustomProperty0" value=""/>
+		<reference referencedUin="jdt:e_class:bin:java.nio.channels.ScatteringByteChannel">
+			<property name="$shortcutReference" value="true"/>
+			<property name="bounds" value="520,340,200,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="collapsedCompartments" value="Operation20"/>
+			<reference referencedUin="jdt:l_gnt:bin:java.nio.channels.ScatteringByteChannel:java.nio.channels.ReadableByteChannel">
+				<property name="sourceAnchor" value="579,340"/>
+				<property name="targetAnchor" value="579,280"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:bin:java.nio.channels.SeekableByteChannel">
+			<property name="$shortcutReference" value="true"/>
+			<property name="bounds" value="1000,380,200,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="view_as_class" value="true"/>
+			<property name="collapsedCompartments" value="Operation20"/>
+			<property name="$hidden" value="true"/>
+			<reference referencedUin="jdt:e_method:bin:java.nio.channels.SeekableByteChannel.read:read~Ljava.nio.ByteBuffer;">
+			</reference>
+			<reference referencedUin="jdt:e_method:bin:java.nio.channels.SeekableByteChannel.write:write~Ljava.nio.ByteBuffer;">
+			</reference>
+			<reference referencedUin="jdt:e_method:bin:java.nio.channels.SeekableByteChannel.size:size">
+			</reference>
+			<reference referencedUin="label:$name:jdt:e_class:bin:java.nio.channels.SeekableByteChannel">
+				<property name="bounds" value="-52,30,124,17"/>
+			</reference>
+			<reference referencedUin="jdt:e_method:bin:java.nio.channels.SeekableByteChannel.position:position~J">
+			</reference>
+			<reference referencedUin="jdt:l_gnt:bin:java.nio.channels.SeekableByteChannel:java.nio.channels.ByteChannel">
+				<property name="sourceAnchor" value="1000,410"/>
+				<property name="targetAnchor" value="477,410"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:e_method:bin:java.nio.channels.SeekableByteChannel.truncate:truncate~J">
+			</reference>
+			<reference referencedUin="jdt:e_method:bin:java.nio.channels.SeekableByteChannel.position:position">
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:bin:java.nio.channels.spi.AbstractSelectableChannel">
+			<property name="$shortcutReference" value="true"/>
+			<property name="bounds" value="879,620,201,82"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="collapsedCompartments" value="Property20,Operation20"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:bin:java.nio.channels.spi.AbstractSelectableChannel:java.nio.channels.SelectableChannel">
+				<property name="sourceAnchor" value="979,620"/>
+				<property name="targetAnchor" value="979,580"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:bin:java.nio.channels.InterruptibleChannel">
+			<property name="$shortcutReference" value="true"/>
+			<property name="bounds" value="660,200,200,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="collapsedCompartments" value="Operation20"/>
+			<reference referencedUin="jdt:l_gnt:bin:java.nio.channels.InterruptibleChannel:java.nio.channels.Channel">
+				<property name="sourceAnchor" value="698,200"/>
+				<property name="targetAnchor" value="550,105"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:bin:java.nio.channels.SocketChannel">
+			<property name="$shortcutReference" value="true"/>
+			<property name="bounds" value="391,701,200,82"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="collapsedCompartments" value="Property20,Operation20"/>
+			<reference referencedUin="jdt:l_gnt:bin:java.nio.channels.SocketChannel:java.nio.channels.spi.AbstractSelectableChannel">
+				<property name="sourceAnchor" value="591,701"/>
+				<property name="targetAnchor" value="879,701"/>
+			</reference>
+			<reference referencedUin="jdt:l_impl:bin:java.nio.channels.SocketChannel:java.nio.channels.GatheringByteChannel">
+				<property name="sourceAnchor" value="428,701"/>
+				<property name="targetAnchor" value="252,439"/>
+			</reference>
+			<reference referencedUin="jdt:l_impl:bin:java.nio.channels.SocketChannel:java.nio.channels.ScatteringByteChannel">
+				<property name="sourceAnchor" value="570,701"/>
+				<property name="targetAnchor" value="570,420"/>
+			</reference>
+			<reference referencedUin="jdt:l_impl:bin:java.nio.channels.SocketChannel:java.nio.channels.ByteChannel">
+				<property name="sourceAnchor" value="428,701"/>
+				<property name="targetAnchor" value="428,440"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:bin:java.nio.channels.FileChannel">
+			<property name="$shortcutReference" value="true"/>
+			<property name="bounds" value="80,760,200,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="collapsedCompartments" value="Property20,Operation20,Class20"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<property name="$hidden" value="true"/>
+			<reference referencedUin="jdt:l_impl:bin:java.nio.channels.FileChannel:java.nio.channels.ScatteringByteChannel">
+				<property name="sourceAnchor" value="247,760"/>
+				<property name="targetAnchor" value="575,440"/>
+			</reference>
+			<reference referencedUin="jdt:l_impl:bin:java.nio.channels.FileChannel:java.nio.channels.GatheringByteChannel">
+				<property name="sourceAnchor" value="247,760"/>
+				<property name="targetAnchor" value="247,439"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:l_gnt:bin:java.nio.channels.FileChannel:java.nio.channels.spi.AbstractInterruptibleChannel">
+				<property name="sourceAnchor" value="247,760"/>
+				<property name="targetAnchor" value="756,458"/>
+			</reference>
+			<reference referencedUin="jdt:l_impl:bin:java.nio.channels.FileChannel:java.nio.channels.SeekableByteChannel">
+				<property name="sourceAnchor" value="277,760"/>
+				<property name="targetAnchor" value="1002,460"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:bin:java.nio.channels.spi.AbstractInterruptibleChannel">
+			<property name="$shortcutReference" value="true"/>
+			<property name="bounds" value="740,359,200,99"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="collapsedCompartments" value="Property20,Operation20"/>
+			<reference referencedUin="jdt:e_field:bin:java.nio.channels.spi.AbstractInterruptibleChannel.closeLock">
+			</reference>
+			<reference referencedUin="jdt:l_impl:bin:java.nio.channels.spi.AbstractInterruptibleChannel:java.nio.channels.Channel">
+				<property name="sourceAnchor" value="796,359"/>
+				<property name="targetAnchor" value="529,105"/>
+				<property name="$hidden" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:l_impl:bin:java.nio.channels.spi.AbstractInterruptibleChannel:java.nio.channels.InterruptibleChannel">
+				<property name="sourceAnchor" value="824,359"/>
+				<property name="targetAnchor" value="824,280"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:bin:java.nio.channels.Channel">
+			<property name="$shortcutReference" value="true"/>
+			<property name="bounds" value="391,20,186,85"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="collapsedCompartments" value="Operation20"/>
+			<reference referencedUin="jdt:e_method:bin:java.nio.channels.Channel.close:close">
+			</reference>
+			<reference referencedUin="jdt:l_gnt:bin:java.nio.channels.Channel:java.io.Closeable">
+			</reference>
+			<reference referencedUin="jdt:e_method:bin:java.nio.channels.Channel.isOpen:isOpen">
+			</reference>
+			<reference referencedUin="label:$name:jdt:e_class:bin:java.nio.channels.Channel">
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:bin:java.nio.channels.ServerSocketChannel">
+			<property name="$shortcutReference" value="true"/>
+			<property name="bounds" value="800,760,200,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="collapsedCompartments" value="Operation20"/>
+			<reference referencedUin="jdt:l_gnt:bin:java.nio.channels.ServerSocketChannel:java.nio.channels.spi.AbstractSelectableChannel">
+				<property name="sourceAnchor" value="939,760"/>
+				<property name="targetAnchor" value="939,702"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:bin:java.nio.channels.DatagramChannel">
+			<property name="$shortcutReference" value="true"/>
+			<property name="bounds" value="120,620,200,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<property name="collapsedCompartments" value="Operation20"/>
+			<reference referencedUin="jdt:e_method:bin:java.nio.channels.DatagramChannel.bind:bind~Ljava.net.SocketAddress;">
+			</reference>
+			<reference referencedUin="jdt:l_impl:bin:java.nio.channels.DatagramChannel:java.nio.channels.GatheringByteChannel">
+				<property name="sourceAnchor" value="200,620"/>
+				<property name="targetAnchor" value="200,439"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:l_gnt:bin:java.nio.channels.DatagramChannel:java.nio.channels.spi.AbstractSelectableChannel">
+				<property name="sourceAnchor" value="320,640"/>
+				<property name="targetAnchor" value="879,640"/>
+			</reference>
+			<reference referencedUin="jdt:l_impl:bin:java.nio.channels.DatagramChannel:java.nio.channels.ByteChannel">
+				<property name="sourceAnchor" value="319,620"/>
+				<property name="targetAnchor" value="365,440"/>
+				<property name="bendpoints" value="320,560"/>
+				<property name="smooth_bendpoints" value="320,560"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:l_impl:bin:java.nio.channels.DatagramChannel:java.nio.channels.ScatteringByteChannel">
+				<property name="sourceAnchor" value="319,620"/>
+				<property name="targetAnchor" value="540,420"/>
+				<property name="bendpoints" value="420,520"/>
+				<property name="smooth_bendpoints" value="420,520"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:bin:java.nio.channels.GatheringByteChannel">
+			<property name="$shortcutReference" value="true"/>
+			<property name="bounds" value="120,359,200,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="collapsedCompartments" value="Operation20"/>
+			<reference referencedUin="jdt:l_gnt:bin:java.nio.channels.GatheringByteChannel:java.nio.channels.WritableByteChannel">
+				<property name="sourceAnchor" value="220,359"/>
+				<property name="targetAnchor" value="220,280"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:e_method:bin:java.nio.channels.GatheringByteChannel.write:write~\[Ljava.nio.ByteBuffer;~I~I">
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:bin:java.nio.channels.WritableByteChannel">
+			<property name="$shortcutReference" value="true"/>
+			<property name="bounds" value="200,200,200,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="collapsedCompartments" value="Operation20"/>
+			<reference referencedUin="jdt:l_gnt:bin:java.nio.channels.WritableByteChannel:java.nio.channels.Channel">
+				<property name="sourceAnchor" value="395,200"/>
+				<property name="targetAnchor" value="395,105"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:bin:java.nio.channels.ReadableByteChannel">
+			<property name="$shortcutReference" value="true"/>
+			<property name="bounds" value="420,200,200,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="collapsedCompartments" value="Operation20"/>
+			<reference referencedUin="jdt:l_gnt:bin:java.nio.channels.ReadableByteChannel:java.nio.channels.Channel">
+				<property name="sourceAnchor" value="455,200"/>
+				<property name="targetAnchor" value="455,105"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:bin:java.nio.channels.ByteChannel">
+			<property name="$shortcutReference" value="true"/>
+			<property name="bounds" value="340,360,137,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:bin:java.nio.channels.ByteChannel:java.nio.channels.WritableByteChannel">
+				<property name="sourceAnchor" value="392,360"/>
+				<property name="targetAnchor" value="392,280"/>
+			</reference>
+			<reference referencedUin="jdt:l_gnt:bin:java.nio.channels.ByteChannel:java.nio.channels.ReadableByteChannel">
+				<property name="sourceAnchor" value="452,360"/>
+				<property name="targetAnchor" value="452,280"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:bin:java.nio.channels.SelectableChannel">
+			<property name="$shortcutReference" value="true"/>
+			<property name="bounds" value="880,500,200,80"/>
+			<property name="collapsedCompartments" value="Operation20"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:bin:java.nio.channels.SelectableChannel:java.nio.channels.spi.AbstractInterruptibleChannel">
+				<property name="sourceAnchor" value="910,500"/>
+				<property name="targetAnchor" value="910,458"/>
+			</reference>
+			<reference referencedUin="jdt:l_impl:bin:java.nio.channels.SelectableChannel:java.nio.channels.Channel">
+				<property name="sourceAnchor" value="944,580"/>
+				<property name="targetAnchor" value="522,105"/>
+				<property name="$hidden" value="true"/>
+			</reference>
+		</reference>
+	</view>
+</nodeSet>
