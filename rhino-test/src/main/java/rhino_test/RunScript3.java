@@ -24,7 +24,7 @@ public class RunScript3 {
 
             // Collect the arguments into a single string.
             String s = "x = {a:7}\n";
-            s+="function f(a) { return a; }";
+            s+="function f(a) { return x; }";
 //            for (int i=0; i < args.length; i++) {
 //                s += args[i];
 //            }

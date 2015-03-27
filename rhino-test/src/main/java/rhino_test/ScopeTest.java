@@ -93,6 +93,71 @@ public class ScopeTest extends TestCase {
 		assertEquals("only in parentScope", v2);
 	}
 
+	public void testThis() {
+
+		// this.对应的是sampleScore
+		String s = "this.greeting";
+		Object v1 = cx.evaluateString(sampleScope, s, "<cmd>", 1, null);
+		assertEquals("greeting in prototype scope", v1);
+
+	}
+	
+	public void testThis2() {
+
+		// this.对应的是sampleScore
+		String s = "this.varInParentScope";
+		Object v1 = cx.evaluateString(sampleScope, s, "<cmd>", 1, null);
+		assertEquals(Undefined.instance, v1);
+
+	}
+	public void testVar() {
+
+		// 生成一个局部变量
+		String s = "var vvv=3998";
+		cx.evaluateString(sampleScope, s, "<cmd>", 1, null);
+
+		// 局部变量不在sampleScopre
+		s = "this.vvv";
+		Object v2 = cx.evaluateString(sampleScope, s, "<cmd>", 1, null);
+		assertEquals(3998, v2);
+		
+		
+	}
+	public void testGloble1() {
+
+		// 生成一个全局变量
+		String s = "ggg=3998";
+		cx.evaluateString(sampleScope, s, "<cmd>", 1, null);
+
+		// 全局变量不在sampleScopre
+		s = "this.ggg";
+		Object v2 = cx.evaluateString(sampleScope, s, "<cmd>", 1, null);
+		assertEquals(Undefined.instance, v2);
+
+		// 全局变量在parentScope
+		s = "this.ggg";
+		Object v3 = cx.evaluateString(parentScope, s, "<cmd>", 1, null);
+		assertEquals(3998, v3);
+	}
+	public void testGloble2() {
+
+		sampleScope.setParentScope(null);
+		// 生成一个全局变量
+		String s = "ggg=3998";
+		cx.evaluateString(sampleScope, s, "<cmd>", 1, null);
+
+		// 全局变量在prototypeScope
+		s = "ggg";
+		Object v3 = cx.evaluateString(prototype, s, "<cmd>", 1, null);
+		assertEquals(Undefined.instance, v3);
+		
+		// 全局变量不在sampleScopre
+		s = "this.ggg";
+		Object v2 = cx.evaluateString(sampleScope, s, "<cmd>", 1, null);
+		assertEquals(3998, v2);
+
+
+	}
 	public void testInitStandardObjectsTimeCost() {
 		// initStandardObjects耗费的时间是newObject的100倍,所以应该context共享
 		long start = System.currentTimeMillis();
