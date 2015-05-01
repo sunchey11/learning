@@ -4,7 +4,6 @@ import io.apigee.trireme.core.NodeEnvironment;
 import io.apigee.trireme.core.NodeException;
 import io.apigee.trireme.core.NodeScript;
 import io.apigee.trireme.core.ScriptStatus;
-import io.apigee.trireme.servlet.internal.EnvironmentManager;
 
 import java.io.File;
 import java.util.concurrent.ExecutionException;
@@ -22,6 +21,7 @@ public class HelloWorld {
 				NodeScript script = env.createScript(scriptName, new File(
 						scriptName), new String[]{"2000"});
 
+				script.setDebugging(true);
 				// Wait for the script to complete
 				ScriptStatus status = script.execute().get();
 
