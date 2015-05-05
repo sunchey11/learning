@@ -30,7 +30,7 @@
   </dependencies>
   
   	<build>
-		<finalName>pwp-framework</finalName>
+		<finalName>nio</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

@@ -32,20 +32,21 @@ import org.mozilla.javascript.tools.debugger.Main;
 public class TriremeDebug2 {
 
 	public static void main(String[] theArgs) throws NodeException {
-		NodeEnvironment env = new NodeEnvironment();
+
 		// callMethod(NodeEnvironment.class, env, "initialize", new Object[]
 		// {});
 
-//		final String pathname = "hellotest.js";
-//		final String pathname = "myjsModuleTest.js";
-//		final String pathname = "myGreetingModuleTest.js";
-//		final String pathname = "fsTest.js";
-		final String pathname="myServer.js";
-		
+		// final String pathname = "myjsModuleTest.js";
+		// final String pathname = "myGreetingModuleTest.js";
+		// final String pathname = "fsTest.js";
+		// final String pathname="myServer.js";
+
+		NodeEnvironment env = new NodeEnvironment();
+		final String pathname = "hellotest.js";
 		File file = new File(pathname);
 		String[] args = new String[] { "2000" };
 		NodeScript script = env.createScript(pathname, file, args);
-		final AbstractModuleRegistry registry = (AbstractModuleRegistry)callMethod(
+		final AbstractModuleRegistry registry = (AbstractModuleRegistry) callMethod(
 				NodeScript.class, script, "getRegistry", new Object[] {});
 		final ScriptRunner runner = new ScriptRunner(script, env, null, file,
 				args);
@@ -60,18 +61,6 @@ public class TriremeDebug2 {
 
 					public Object run(Context cx) {
 
-						// All scripts get their own global scope. This is a lot
-						// safer
-						// than sharing them in case a script wants
-						// to add to the prototype of String or Date or whatever
-						// (as
-						// they often do)
-						// This uses a bit more memory and in theory slows down
-						// script
-						// startup but in practice it is
-						// a drop in the bucket.
-
-						
 						ScriptableObject scope = cx.initStandardObjects();
 						setField(ScriptRunner.class, "scope", runner, scope);
 						// Lazy first-time init of the node version.
@@ -85,18 +74,21 @@ public class TriremeDebug2 {
 					}
 
 				});
-		Main.mainEmbedded(contextFactory, scope, "aaaa");
+		org.mozilla.javascript.tools.debugger.Main.mainEmbedded(contextFactory,
+				scope, "my test");
 		Object result = contextFactory.call(new ContextAction() {
 
 			public Object run(Context cx) {
 				cx.putThreadLocal(ScriptRunner.RUNNER, runner);
-				
+
 				Script mainScript = registry.getMainScript();
-				
+
 				try {
-					String string = IOUtils.toString(trireme.class.getResourceAsStream("trireme.js"));
-					Function main = (Function) cx.evaluateString(scope, string, "<cmd>", 1, null);
-//					Function main = (Function) mainScript.exec(cx, scope);
+					String string = IOUtils.toString(trireme.class
+							.getResourceAsStream("trireme.js"));
+					Function main = (Function) cx.evaluateString(scope, string,
+							"<cmd>", 1, null);
+					// Function main = (Function) mainScript.exec(cx, scope);
 					ProcessImpl process = runner.getProcess();
 					Object r = main.call(cx, scope, scope,
 							new Object[] { process });

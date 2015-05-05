@@ -33,14 +33,25 @@ public class TestMainEmbedded {
 				try {
 					//可以跟踪到
 					cx.evaluateString(scope, "var x='a'", "<cmd>", 1, null);
+					scope.put("testMe", scope, "value1234");
 					//testDebugger1.js里定义了一个函数f,在testDebugger2.js里用脚本调用是可以跟踪源代码的
 					Function f1 = (Function) cx.evaluateReader(scope, new FileReader("testDebugger1.js"), "testDebugger1", 1, null);
 					cx.evaluateReader(scope, new FileReader("testDebugger2.js"), "testDebugger2", 1, null);
+					
 					
 					//这个也可以跟踪
 					Object r = f1.call(cx, scope, scope,
 							new Object[] {"xx,bb"  });
 					System.out.println(r);
+					
+					//换一个函数的作用域
+					Scriptable newScope = cx.newObject(scope);
+					newScope.put("varInNewScope", newScope, 1234567);
+//					newScope.setPrototype(null);
+					System.out.println(newScope.getPrototype());
+					Object r2 = f1.call(cx, newScope, newScope,
+							new Object[] {"xx,bb"  });
+					System.out.println(r2);
 					
 					//编译成script以后,就不能再跟踪了
 					Script script = cx.compileString("function f2(a) {debugger;return a+':xxbb';}", "<cmd>", 1, null);
@@ -48,7 +59,6 @@ public class TestMainEmbedded {
 					//无法跟踪到f2调用里面了
 					cx.evaluateString(scope, "var x=f2('a');java.lang.System.out.println(x)", "<cmd>", 1, null);
 					
-					//无法跟踪到f2调用里面了
 					cx.evaluateString(scope, "Packages.debugger1.Utils.hello('aaa')", "<cmd>", 1, null);
 				} catch (FileNotFoundException e) {
 					throw new RuntimeException(e);

@@ -23,7 +23,7 @@ public class HelloModuleTest extends TestCase {
 
 		NodeScript script = env.createScript("hellotest.js", new File(
 				"hellotest.js"), new String[] { "2000" });
-
+//		script.setDebugger(true);
 		ScriptStatus status = script.execute().get();
 		
 	}

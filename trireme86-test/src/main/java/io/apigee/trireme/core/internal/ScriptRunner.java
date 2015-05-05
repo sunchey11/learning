@@ -37,7 +37,28 @@ import io.apigee.trireme.core.modules.Buffer;
 import io.apigee.trireme.core.modules.NativeModule;
 import io.apigee.trireme.core.modules.Process;
 import io.apigee.trireme.core.modules.ProcessWrap;
-import io.apigee.trireme.net.SelectorHandler;
+import io.apigee.trireme.kernel.PathTranslator;
+import io.apigee.trireme.kernel.fs.AdvancedFilesystem;
+import io.apigee.trireme.kernel.fs.BasicFilesystem;
+import io.apigee.trireme.kernel.net.NetworkPolicy;
+import io.apigee.trireme.kernel.net.SelectorHandler;
+
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ContextAction;
+import org.mozilla.javascript.ContextFactory;
+import org.mozilla.javascript.EcmaError;
+import org.mozilla.javascript.EvaluatorException;
+import org.mozilla.javascript.Function;
+import org.mozilla.javascript.JavaScriptException;
+import org.mozilla.javascript.RhinoException;
+import org.mozilla.javascript.Script;
+import org.mozilla.javascript.ScriptRuntime;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.Undefined;
+import org.mozilla.javascript.tools.debugger.Main;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.File;
@@ -56,24 +77,12 @@ import java.util.PriorityQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.ContextAction;
-import org.mozilla.javascript.EcmaError;
-import org.mozilla.javascript.EvaluatorException;
-import org.mozilla.javascript.Function;
-import org.mozilla.javascript.JavaScriptException;
-import org.mozilla.javascript.RhinoException;
-import org.mozilla.javascript.Script;
-import org.mozilla.javascript.ScriptRuntime;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
-import org.mozilla.javascript.Undefined;
-import org.mozilla.javascript.tools.debugger.Main;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This class actually runs the script.
@@ -101,7 +110,7 @@ public class ScriptRunner
     private        ScriptFuture    future;
     private final  CountDownLatch          initialized = new CountDownLatch(1);
     private final  Sandbox                 sandbox;
-    private final  PathTranslator          pathTranslator;
+    private final PathTranslator pathTranslator;
     private final  ExecutorService         asyncPool;
     private final IdentityHashMap<Closeable, Closeable> openHandles =
         new IdentityHashMap<Closeable, Closeable>();
@@ -111,6 +120,7 @@ public class ScriptRunner
     private final  Selector                      selector;
     private        int                           timerSequence;
     private final  AtomicInteger                 pinCount      = new AtomicInteger(0);
+    private        BasicFilesystem               filesystem;
 
     // Globals that are set up for the process
     private NativeModule.NativeImpl nativeModule;
@@ -237,6 +247,11 @@ public class ScriptRunner
     }
 
     @Override
+    public NetworkPolicy getNetworkPolicy() {
+        return (sandbox == null ? null : sandbox.getNetworkPolicy());
+    }
+
+    @Override
     public NodeScript getScriptObject() {
         return scriptObject;
     }
@@ -283,6 +298,10 @@ public class ScriptRunner
     @Override
     public ExecutorService getUnboundedPool() {
         return env.getScriptPool();
+    }
+
+    public BasicFilesystem getFilesystem() {
+        return filesystem;
     }
 
     public InputStream getStdin() {
@@ -365,10 +384,10 @@ public class ScriptRunner
      * This method uses a concurrent queue so it may be called from any thread.
      */
     @Override
-    public void enqueueCallback(Function f, Scriptable scope, Scriptable thisObj, Scriptable domain, Object[] args)
+    public void enqueueCallback(Function f, Scriptable scope, Scriptable thisObj, Object domain, Object[] args)
     {
         Callback cb = new Callback(f, scope, thisObj, args);
-        cb.setDomain(domain);
+        cb.setDomain((Scriptable)domain);
         tickFunctions.offer(cb);
         selector.wakeup();
     }
@@ -386,10 +405,19 @@ public class ScriptRunner
      * This method uses a concurrent queue so it may be called from any thread.
      */
     @Override
-    public void enqueueTask(ScriptTask task, Scriptable domain)
+    public void enqueueTask(ScriptTask task, Object domain)
     {
         Task t = new Task(task, scope);
-        t.setDomain(domain);
+        t.setDomain((Scriptable)domain);
+        tickFunctions.offer(t);
+        selector.wakeup();
+    }
+
+    @Override
+    public void executeScriptTask(Runnable r, Object domain)
+    {
+        RunnableTask t = new RunnableTask(r);
+        t.setDomain((Scriptable)domain);
         tickFunctions.offer(t);
         selector.wakeup();
     }
@@ -503,7 +531,8 @@ public class ScriptRunner
         return t;
     }
 
-    public Scriptable getDomain()
+    @Override
+    public Object getDomain()
     {
         return ArgUtils.ensureValid(process.getDomain());
     }
@@ -531,6 +560,35 @@ public class ScriptRunner
         }
         timerQueue.add(t);
         selector.wakeup();
+        return t;
+    }
+
+    /**
+     * This is a more generic way of creating a timer that can be used in the kernel, and which
+     * works even if we are not in the main thread.
+     */
+    public Future<Boolean> createTimedTask(Runnable r, long delay, TimeUnit unit, boolean repeating, Object domain)
+    {
+        final RunnableTask t = new RunnableTask(r);
+        t.setDomain((Scriptable)domain);
+        t.setTimeout(System.currentTimeMillis() + unit.toMillis(delay));
+        t.setRepeating(repeating);
+        if (repeating) {
+            t.setInterval(delay);
+        }
+
+        enqueueTask(new ScriptTask()
+        {
+            @Override
+            public void execute(Context cx, Scriptable scope)
+            {
+                if (!t.isCancelled()) {
+                    t.setId(timerSequence++);
+                    timerQueue.add(t);
+                    selector.wakeup();
+                }
+            }
+        });
         return t;
     }
 
@@ -622,7 +680,18 @@ public class ScriptRunner
     public ScriptStatus call()
         throws NodeException
     {
-        Object ret = env.getContextFactory().call(new ContextAction()
+        ContextFactory contextFactory = env.getContextFactory();
+        contextFactory.call(new ContextAction(){
+        	 @Override
+             public Object run(Context cx)
+             {
+        		 scope = cx.initStandardObjects();
+        		 return null;
+             }
+        });
+        Main.mainEmbedded(env.getContextFactory(), scope, "trireme debug");
+
+		Object ret = contextFactory.call(new ContextAction()
         {
             @Override
             public Object run(Context cx)
@@ -652,11 +721,10 @@ public class ScriptRunner
             // to add to the prototype of String or Date or whatever (as they often do)
             // This uses a bit more memory and in theory slows down script startup but in practice it is
             // a drop in the bucket.
-            scope = cx.initStandardObjects();
-            
-            Main.mainEmbedded(env.getContextFactory(),
-            		scope, "trireme debug");
+//            scope = cx.initStandardObjects();
 
+           
+            
             // Lazy first-time init of the node version.
             registry.loadRoot(cx);
 
@@ -667,7 +735,7 @@ public class ScriptRunner
             } finally {
                 initialized.countDown();
             }
-
+           
             if ((scriptFile == null) && (script == null)) {
                 // Just have trireme.js process "process.argv"
                 process.setForceRepl(forceRepl);
@@ -683,15 +751,22 @@ public class ScriptRunner
                 setArgv(scriptFileName);
             }
 
+           env.getContextFactory().call(new ContextAction() {
+    			public Object run(Context cx) {
+    				Scriptable scope1 = cx.initStandardObjects();
+    				cx.evaluateString(scope1, "var x='a'", "<cmd>", 1, null);
+    				return null;
+    			}
+    		});
             // Run "trireme.js," which is our equivalent of "node.js". It returns a function that takes
             // "process". When done, we may have ticks to execute.
             Script mainScript = registry.getMainScript();
+            
             Function main = (Function)mainScript.exec(cx, scope);
 
             boolean timing = startTiming(cx);
             try {
                 main.call(cx, scope, scope, new Object[] { process });
-                
             } catch (RhinoException re) {
                 boolean handled = handleScriptException(cx, re);
                 if (!handled) {
@@ -816,9 +891,9 @@ public class ScriptRunner
                 if (log.isTraceEnabled()) {
                     Scriptable ib = (Scriptable)process.getTickInfoBox();
                     log.trace("PollDelay = {}. tickFunctions = {} needImmediate = {} needTick = {} timerQueue = {} pinCount = {} tick = {}, {}, {}",
-                              new Object[]{ pollTimeout, tickFunctions.size(), process.isNeedImmediateCallback(),
+                              pollTimeout, tickFunctions.size(), process.isNeedImmediateCallback(),
                               process.isNeedTickCallback(), timerQueue.size(), pinCount.get(),
-                              ib.get(0, ib), ib.get(1, ib), ib.get(2, ib)});
+                              ib.get(0, ib), ib.get(1, ib), ib.get(2, ib));
                 }
 
                 // Check for network I/O and also sleep if necessary.
@@ -878,7 +953,7 @@ public class ScriptRunner
 
         if (log.isDebugEnabled()) {
             log.debug("Handling fatal exception {} domain = {}\n{}",
-            		  new Object[]{ re, System.identityHashCode(process.getDomain()), re.getScriptStackTrace()});
+                      re, System.identityHashCode(process.getDomain()), re.getScriptStackTrace());
             log.debug("Fatal Java exception: {}", re);
         }
 
@@ -1043,6 +1118,13 @@ public class ScriptRunner
     private void initGlobals(Context cx)
         throws NodeException
     {
+        if (JavaVersion.get().hasAsyncFileIO()) {
+            // Java 7 and up -- use new filesystem
+            filesystem = new AdvancedFilesystem();
+        } else {
+            filesystem = new BasicFilesystem();
+        }
+
         try {
             // Need to bootstrap the "native module" before we can do anything
             NativeModule.NativeImpl nativeMod =
@@ -1062,8 +1144,8 @@ public class ScriptRunner
             // The buffer module needs special handling because of the "charsWritten" variable
             buffer = (Buffer.BufferModuleImpl)require("buffer", cx);
 
-            // Set up metrics -- defining these lets us run internal Node projects.
-            // Presumably in "real" node these are set up by some sort of preprocessor...
+            // These macros are used all over node code, so stub them out.
+            // A JavaScript preprocessor does this in real node -- TODO to switch to that.
             Scriptable metrics = nativeMod.internalRequire("trireme_metrics", cx);
             copyProp(metrics, scope, "DTRACE_NET_SERVER_CONNECTION");
             copyProp(metrics, scope, "DTRACE_NET_STREAM_END");
@@ -1317,17 +1399,17 @@ public class ScriptRunner
         }
     }
 
-    private final class Task
+    private abstract class AbstractTask
         extends Activity
     {
-        private ScriptTask task;
         private Scriptable scope;
 
-        Task(ScriptTask task, Scriptable scope)
+        protected AbstractTask(Scriptable scope)
         {
-            this.task = task;
             this.scope = scope;
         }
+
+        protected abstract void executeTask(Context cx);
 
         @Override
         void execute(Context cx)
@@ -1345,7 +1427,7 @@ public class ScriptRunner
                 enter.call(cx, enter, domain, ScriptRuntime.emptyArgs);
             }
 
-            task.execute(cx, scope);
+            executeTask(cx);
 
             // Do NOT do this next bit in a try..finally block. Why not? Because the exception handling
             // logic in runMain depends on "process.domain" still being set, and it will clean up
@@ -1357,6 +1439,68 @@ public class ScriptRunner
                 Function exit = (Function)ScriptableObject.getProperty(domain, "exit");
                 exit.call(cx, exit, domain, ScriptRuntime.emptyArgs);
             }
+        }
+    }
+
+    private final class Task
+        extends AbstractTask
+    {
+        private ScriptTask task;
+
+        Task(ScriptTask task, Scriptable scope)
+        {
+            super(scope);
+            this.task = task;
+        }
+
+        @Override
+        protected void executeTask(Context cx)
+        {
+            task.execute(cx, scope);
+        }
+    }
+
+    private final class RunnableTask
+        extends AbstractTask
+        implements Future<Boolean>
+    {
+        private Runnable task;
+
+        RunnableTask(Runnable task)
+        {
+            super(ScriptRunner.this.scope);
+            this.task = task;
+        }
+
+        @Override
+        protected void executeTask(Context cx)
+        {
+            task.run();
+        }
+
+        @Override
+        public boolean cancel(boolean mayInterruptIfRunning)
+        {
+            setCancelled(true);
+            return true;
+        }
+
+        @Override
+        public boolean isDone()
+        {
+            return false;
+        }
+
+        @Override
+        public Boolean get()
+        {
+            return Boolean.TRUE;
+        }
+
+        @Override
+        public Boolean get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException
+        {
+            return Boolean.TRUE;
         }
     }
 }

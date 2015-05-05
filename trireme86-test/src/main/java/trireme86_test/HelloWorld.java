@@ -26,7 +26,7 @@ public class HelloWorld {
 				ScriptStatus status = script.execute().get();
 
 				// Check the exit code
-				System.exit(status.getExitCode());
+//				System.exit(status.getExitCode());
 
 	}
 

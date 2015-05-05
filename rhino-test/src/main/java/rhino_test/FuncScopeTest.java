@@ -72,7 +72,9 @@ public class FuncScopeTest extends TestCase {
 		script.append("function func1(){\n");
 		script.append("    bbb='222';\n");
 		script.append("    java.lang.System.out.println(greeting)\n");
-		script.append("}\n");
+		script.append("}");
+		script.append("func1()"
+				+ "\n");
 
 		// sampleScope.put("greeting", sampleScope,"no xxx");
 		cx.evaluateString(sampleScope, script.toString(), "<cmd>", 1, null);
