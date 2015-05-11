@@ -8,4 +8,8 @@ release.properties
 tij/nio/data2.txt
 tij/nio/data.txt
 *.txt
+<<<<<<< HEAD
 understanding-jvm/.classpath
+=======
+*.hprof
+>>>>>>> e65185b9e6f792d44236c3be3f9777a00631d5ef
