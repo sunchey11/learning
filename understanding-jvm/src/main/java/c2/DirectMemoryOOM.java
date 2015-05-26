@@ -2,6 +2,8 @@ package c2;
 
 import java.lang.reflect.Field;
 
+import sun.misc.Unsafe;
+
 /**
  * VM Args：-Xmx20M -XX:MaxDirectMemorySize=10M
  * @author zzm
