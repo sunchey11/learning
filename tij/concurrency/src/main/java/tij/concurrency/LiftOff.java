@@ -1,5 +1,7 @@
 package tij.concurrency;
 
+import java.util.concurrent.TimeUnit;
+
 //: concurrency/LiftOff.java
 // Demonstration of the Runnable interface.
 
@@ -23,6 +25,12 @@ public class LiftOff implements Runnable {
 	public void run() {
 		while (countDown-- > 0) {
 			System.out.print(status());
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			Thread.yield();
 		}
 	}
