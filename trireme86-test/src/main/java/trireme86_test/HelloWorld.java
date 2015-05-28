@@ -18,6 +18,7 @@ public class HelloWorld {
 				// and an Object[] containg "argv"
 //				String scriptName = "helloWorld.js";
 				String scriptName = "myServer.js";
+//				String scriptName = "hellotest.js";
 				NodeScript script = env.createScript(scriptName, new File(
 						scriptName), new String[]{"2000"});
 

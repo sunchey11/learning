@@ -13,7 +13,7 @@
 		</init-param>
 		<init-param>
 			<param-name>TriremeResponseTimeout</param-name>
-			<param-value>5</param-value>
+			<param-value>50000</param-value>
 		</init-param>
 		<init-param>
 			<param-name>TriremeStartupTimeout</param-name>

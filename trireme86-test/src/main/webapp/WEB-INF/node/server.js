@@ -8,6 +8,7 @@ var PORT = process.env.PORT || 33333;
 var counter = 0;
 var hello = require('hello-world');
 function handleRequest(req, resp) {
+
   console.log('%s %s', req.method, req.url);
 
   if (/[^/]*\/servlet\/update$/.test(req.url)) {

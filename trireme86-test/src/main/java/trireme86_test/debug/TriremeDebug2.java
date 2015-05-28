@@ -27,7 +27,7 @@ import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.tools.debugger.Main;
 
 /**
- * 功能拆解测试,测试debug trireme
+ * 功能拆解测试,测试debug trireme,现已不需要
  *
  */
 public class TriremeDebug2 {
