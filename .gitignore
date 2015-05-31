@@ -10,3 +10,8 @@ tij/nio/data.txt
 *.txt
 understanding-jvm/.classpath
 *.hprof
+tij/concurrency/.classpath
+
+tij/concurrency/.classpath
+
+tij/concurrency/.classpath
