@@ -1,4 +1,4 @@
-package net.mindview.util;
+package tij.concurrency.s9;
 
 //: concurrency/SimpleMicroBenchmark.java
 // The dangers of microbenchmarking.
