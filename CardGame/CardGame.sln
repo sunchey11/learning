@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CardGame", "CardGame\CardGame.vcxproj", "{27CFAF94-7F81-4FE5-A40D-C12AFEADDDDB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2832527D-51F9-42D4-9D82-14109B660926}"
+	ProjectSection(SolutionItems) = preProject
+		CardGame.vsmdi = CardGame.vsmdi
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = CardGame.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27CFAF94-7F81-4FE5-A40D-C12AFEADDDDB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{27CFAF94-7F81-4FE5-A40D-C12AFEADDDDB}.Debug|Win32.Build.0 = Debug|Win32
+		{27CFAF94-7F81-4FE5-A40D-C12AFEADDDDB}.Release|Win32.ActiveCfg = Release|Win32
+		{27CFAF94-7F81-4FE5-A40D-C12AFEADDDDB}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
