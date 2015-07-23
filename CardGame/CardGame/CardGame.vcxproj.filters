@@ -47,8 +47,5 @@
     <ClCompile Include="Poker.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="DynaArray.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
