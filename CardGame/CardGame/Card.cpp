@@ -1,8 +1,6 @@
 #include "StdAfx.h"
 #include "Card.h"
 
-
-
 Card::Card(void)
 	: m_code(0)
 {
@@ -27,4 +25,9 @@ enum CardType Card::getType(void)
 char Card::getNumber(void)
 {
 	return (m_code%13)+1;
+}
+ostream& operator<< (ostream &os,Card &st)
+{
+	os <<"type:"<< st.getType()<<",number:"<<st.getNumber()<<endl;
+	return os;
 }

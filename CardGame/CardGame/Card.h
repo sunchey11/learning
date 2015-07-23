@@ -1,6 +1,9 @@
 #pragma once
-
+#include <iostream>
+#include <string>
+using namespace std;
 enum CardType{Spade, Heart, Club, Diamond } ;//ºÚ,ºì,Ã·,·½
+
 class Card
 {
 public:
@@ -15,3 +18,4 @@ public:
 	char getNumber(void);
 };
 
+ostream& operator<< (ostream &os,Card &st);

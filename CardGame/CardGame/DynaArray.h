@@ -24,7 +24,9 @@ public:
 	void remove(int index);
 	void debug(){
 		for(int i=0;i<currentLength;i++){
-			cout<<i<<"          "<<(this->get(i))<<endl;
+			T v = this->get(i);
+			
+			cout<<i<<"          "<<v<<endl;
 		}
 	}
 private:

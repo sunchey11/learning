@@ -10,7 +10,6 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-
 void testCard_1(){
 	cout<<"testCard_1"<<endl;
 	Card c(70);
@@ -57,13 +56,54 @@ void testDynaArray_2(){
 
 
 }
+void testDynaArray_3(){
+	cout<<"testDynaArray_3"<<endl;
+
+	//测试普通构造函数
+	DynaArray <Card> arr1;
+	cout<<arr1.max<<endl;
+	arr1.add(Card(5));
+
+	//测试普通构造函数
+	DynaArray <Card> arr2(10);
+	cout<<arr2.max<<endl;
+	arr2.add(Card(15));
+
+	//测试复制构造函数
+	DynaArray <Card> arr3(arr1);
+	cout<<arr3.max<<endl;
+
+	//测试赋值运算符
+	arr3 = arr2;
+	cout<<arr3.max<<endl;
+
+	//测试添加
+	try
+	{
+		for(int i=0;i<10;i++){
+
+			arr3.add(Card(10+i));
+
+		}
+	}
+	catch(IndexOutOfBoundsException e)
+	{
+		cout<<"exxxxxxxxxxxxxxxxxxxxxxxx:"<<&e<<endl;
+	}
+
+	cout<<"okkk"<<endl;
+	arr3.debug();
+
+
+}
 void gameStart(){
 	cout<<"gameStart"<<endl;
 
-	testDynaArray_2();
+	testDynaArray_3();
 }
 int _tmain(int argc, _TCHAR* argv[])
 {
+	
 	const int max=10;
 	char choice[max];
 	cin.getline(choice,max,'\n');
@@ -82,6 +122,9 @@ int _tmain(int argc, _TCHAR* argv[])
 		}else if(intChoice==2)
 		{
 			testDynaArray_2();
+		}else if(intChoice==3)
+		{
+			testDynaArray_3();
 		}
 
 
