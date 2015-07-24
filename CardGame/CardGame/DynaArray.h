@@ -21,7 +21,10 @@ public:
 	//返回值声明为引用，此函数就可以作为lvalue了，不需要再写一个set方法了
 	//如果不希望作为lvalue使用，可以增加const关键字
 	T& get(int index);
-	void remove(int index);
+	void removeAt(int index);
+	void remove(T v);
+	void swap(T &a,T &b);
+	void random();
 	void debug(){
 		for(int i=0;i<currentLength;i++){
 			T v = this->get(i);
@@ -116,9 +119,31 @@ template <class T> T& DynaArray<T>:: get(int index)
 	}
 	return datas[index];
 }
+template <class T>	void DynaArray<T>::swap(T &a,T &b)
+{
+	T temp = a;
+	a=b;
+	b=temp;
+}
 
-
-template <class T>	void DynaArray<T>:: remove(int index)
+template <class T>	void DynaArray<T>:: random(){
+		
+	for(int i=0;i<currentLength;i++)
+	{
+		/*返回i到n之间的一个数字*/
+		int index=rand()%(currentLength-i)+i;
+		swap(get(i),get(index));
+	}
+}
+template <class T>	void DynaArray<T>:: remove(T v){
+	for(int i=0;i<currentLength;i++){
+		if(get(i)==v){
+			removeAt(i);
+			break;
+		}
+	}
+}
+template <class T>	void DynaArray<T>:: removeAt(int index)
 {
 	if(index>currentLength){
 		throw IndexOutOfBoundsException();

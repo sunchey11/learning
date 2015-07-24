@@ -2,8 +2,11 @@
 #include "Poker.h"
 
 
-Poker::Poker(void)
+Poker::Poker(char beginCode, char endCode)
 {
+	for(int i=beginCode;i<=endCode;i++){
+		cardArr.add(Card(i));
+	}
 }
 
 

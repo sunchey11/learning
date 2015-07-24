@@ -16,6 +16,7 @@ private:
 public:
 	enum CardType getType(void);
 	char getNumber(void);
+	bool operator==(Card &card);
 };
 
 ostream& operator<< (ostream &os,Card &st);

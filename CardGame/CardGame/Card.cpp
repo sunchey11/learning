@@ -28,6 +28,12 @@ char Card::getNumber(void)
 }
 ostream& operator<< (ostream &os,Card &st)
 {
-	os <<"type:"<< st.getType()<<",number:"<<st.getNumber()<<endl;
+	os <<"type:"<< st.getType()<<",number:"<<(int)st.getNumber()<<endl;
 	return os;
+}
+
+bool Card::operator==(Card & card)
+{
+	return m_code==card.m_code;
+
 }

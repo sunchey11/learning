@@ -90,8 +90,12 @@ void testDynaArray_3(){
 	{
 		cout<<"exxxxxxxxxxxxxxxxxxxxxxxx:"<<&e<<endl;
 	}
+	arr3.remove(Card(15));
 
 	cout<<"okkk"<<endl;
+	arr3.debug();
+	cout<<"random"<<endl;
+	arr3.random();
 	arr3.debug();
 
 
