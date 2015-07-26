@@ -42,7 +42,12 @@ public:
 
 	int size(void)
 	{
-		return 0;
+		return currentLength;
+	}
+
+	void clearAll()
+	{
+		currentLength = 0;
 	}
 };
 

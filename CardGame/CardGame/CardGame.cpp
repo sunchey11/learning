@@ -6,6 +6,9 @@
 #include <string>
 #include "Card.h"
 #include "DynaArray.h"
+#include "Round.h"
+#include "Player.h"
+#include "Game.h"
 using std::cout;
 using std::cin;
 using std::endl;
@@ -102,6 +105,18 @@ void testDynaArray_3(){
 }
 void gameStart(){
 	cout<<"gameStart"<<endl;
+	Game g;
+	if (!g.oneGame())//somebody canceled
+	{
+		cout << "somebody canceled" << endl;
+		g.printPlayerInfo();
+
+	}
+	else{
+		g.getWinner();
+	}
+	
+
 
 	testDynaArray_3();
 }

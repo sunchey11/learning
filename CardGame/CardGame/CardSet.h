@@ -1,4 +1,5 @@
 #pragma once
+#include "Card.h"
 class CardSet
 {
 public:
