@@ -48,6 +48,12 @@
     <ClInclude Include="Action.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ComputerPlayer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanPlayer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -75,6 +81,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Action.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ComputerPlayer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HumanPlayer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
