@@ -36,10 +36,10 @@ void Player::roundStart(Round round)
 
 bool Player::active(const Round& round)
 {
-	if (actions.size == 0){
+	if (actions.size() == 0){
 		return true;
 	}
-	Action * lastAction = &actions.get(actions.size - 1);
+	Action * lastAction = &(actions.get(actions.size() - 1));
 	if (lastAction->type == giveup || lastAction->type == failure){
 		return false;
 	}

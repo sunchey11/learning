@@ -1,6 +1,7 @@
 #pragma once
 #include "CardSet.h"
 #include "Player.h"
+#include "DynaArray.h"
 class Round;
 class Game;
 class Action;
@@ -18,7 +19,7 @@ public:
 	virtual bool goOn(const Game & game) = 0;
 
 	//var used by round
-	DynaArray<Action> actions;
+	DynaArray <Action> actions;
 	void roundStart(Round round);
 	bool active(const Round &round);
 };
