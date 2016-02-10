@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<script>
+var a = NaN;
+alert(a);
+var b = 0/0;//0
+alert(b);
+alert(a==b);//判断值是否为NaN,不能使用==
+alert(a!=a);//而应使用!=
+alert('isNaN(19)='+isNaN(19)); //false;
+alert('isNaN("aabbcc")='+isNaN('aabbcc')); // true;
+alert('isNaN(a)='+isNaN(a));//true
+</script>
+
+</body>
+</html>

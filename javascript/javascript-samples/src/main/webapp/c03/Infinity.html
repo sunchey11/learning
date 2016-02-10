@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<script>
+var a=129/0; //被0除不会报错，返回Infinity
+alert(a);//alert Infinity
+var ifi=Infinity;
+alert(a==ifi); //alert true
+
+var b=-129/0; //被0除不会报错，返回负无穷大
+alert(b);//alert Infinity
+alert(b==-Infinity); //alert true
+
+</script>
+
+</body>
+</html>
