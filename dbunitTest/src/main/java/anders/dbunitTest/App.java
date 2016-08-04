@@ -2,6 +2,7 @@ package anders.dbunitTest;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,7 +16,7 @@ import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 
 /**
- * Hello world!
+ * 导出数据
  *
  */
 public class App 
@@ -31,9 +32,11 @@ public class App
 		Connection  conn = DriverManager.getConnection(url,username,password);//连接Connection对象
     	IDatabaseConnection connection = new DatabaseConnection(conn);
 		QueryDataSet backupDataSet = new QueryDataSet(connection);
+		
     	backupDataSet.addTable("pwp_account");
     	backupDataSet.addTable("pwp_org");
     	File file = new File("aa.xml");// 备份文件
     	FlatXmlDataSet.write(backupDataSet,new FileOutputStream(file));
+    	FlatXmlDataSet.write(backupDataSet, new FileWriter("bbb.xml"), "gbk");
     }
 }

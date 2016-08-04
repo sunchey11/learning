@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<script>
+var o1 = Object.create({x:1,y:2});
+debugger;
+alert(o1.x);
+alert(o1.prototype);//undefined
+var o2 = Object.create(null);
+alert(o2);//o2不从object继承，所以没有toString方法
+</script>
+
+</body>
+</html>

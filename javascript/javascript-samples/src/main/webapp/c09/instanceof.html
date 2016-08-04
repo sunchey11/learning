@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<script>
+function People(){
+	
+}
+function Address(){
+	this.name='abc';
+	this.street='xyz';
+}
+Address.prototype.greeting=function(){
+	alert(this.street);
+}
+Address.prototype=People.prototype;
+debugger;
+//instanceof 判断时，是判断a是否继承自Address.prototype,与构造函数Address没有关系
+var a = new Address();
+debugger;
+alert(a instanceof Address);
+var b={};
+b.__proto__=new Address();
+alert(b instanceof Address);
+var c={};
+c.__proto__=Address.prototype;
+alert(c instanceof Address);
+
+a.__proto__={};
+alert(a instanceof Address);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<script>
+function Address(){
+	this.name='abc';
+	this.street='xyz';
+}
+Address.prototype.greeting=function(){
+	alert(this.street);
+}
+debugger;
+var a = new Address();
+a.greeting();
+</script>
+
+</body>
+</html>
