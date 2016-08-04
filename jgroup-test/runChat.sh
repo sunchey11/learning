@@ -1,0 +1,1 @@
+mvn exec:java -Dexec.mainClass="com.ebig.ebeit.jgroup_test.SimpleChat"
