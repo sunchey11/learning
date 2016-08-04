@@ -3,6 +3,7 @@ package com.ebig.ebeit.jgroup_test;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -21,7 +22,7 @@ public class SimpleChat extends ReceiverAdapter {
 	final List<String> state = new LinkedList<String>();
 
 	private void start() throws Exception {
-		channel = new JChannel(); // use the default config, udp.xml
+		channel = new JChannel(new File("gossip.xml")); // use the default config, udp.xml
 		channel.setReceiver(this);
 		channel.connect("ChatCluster");
 		channel.getState(null, 1000000000);
